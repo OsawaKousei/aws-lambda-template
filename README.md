@@ -1,6 +1,6 @@
-# AWS Lambda LINE Bot アプリケーション
+# AWS Lambda テンプレート
 
-このリポジトリは、AWS Lambda アプリケーションのサンプルプロジェクトです。TypeScript で開発され、Docker を使用してローカル開発環境をセットアップし、AWS Lambda にデプロイするための構成が含まれています。
+このリポジトリは、AWS Lambda アプリケーションのサンプルプロジェクトです。TypeScript で開発され、Docker を使用してローカル開発環境をセットアップし、AWS Lambda にデプロイするための構成が含まれています。package.json のプロジェクト名、docker compose におけるサービス・コンテナ名は github action により、作成時に自動でレポジトリ名に初期化されます。
 
 ## 目次
 
@@ -98,5 +98,4 @@ docker cp lambda-service:/tmp/index.js ./build/index.js
 2. Lambda サービスに移動します
 3. 「関数の作成」をクリックし、必要な情報を入力します
 4. 「.zip ファイルをアップロード」を選択し、`build/lambda.zip` をアップロードします
-5. ハンドラーを `index.handler` に設定します
-6. 環境変数を設定します（必要に応じて）
+5. 環境変数を設定します（必要に応じて）
