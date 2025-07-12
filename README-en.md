@@ -12,8 +12,6 @@ This repository is a sample project for an AWS Lambda application. It is develop
 - [Local Development Environment](#local-development-environment)
 - [Build](#build)
 - [Deployment](#deployment)
-- [LINE Bot Configuration](#line-bot-configuration)
-- [Troubleshooting](#troubleshooting)
 
 ## Prerequisites
 
