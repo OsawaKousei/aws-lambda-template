@@ -1,8 +1,8 @@
 version: "3.6"
 
 services:
-  aws-lambda-template-lambda-service:
-    container_name: aws-lambda-template-lambda-service
+  {{repository_name}}-lambda-service:
+    container_name: {{repository_name}}-lambda-service
     build: .
     ports:
       - "9000:8080"

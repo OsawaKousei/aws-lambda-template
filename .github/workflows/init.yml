@@ -1,7 +1,6 @@
 name: Initialize Repository
 
-# ワークフローが実行されるタイミングを定義
-# mainブランチへの最初のpushをトリガーとする
+# このワークフローは、リポジトリの初期化を行います。
 on:
   push:
     branches:
@@ -10,31 +9,44 @@ on:
 jobs:
   initialize:
     runs-on: ubuntu-latest
-    # GITHUB_TOKEN に書き込み権限を与える
     permissions:
       contents: write
 
     steps:
-      # 1. リポジトリのソースコードをチェックアウトする
+      # 1. リポジトリをチェックアウトします。。
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # 2. プレースホルダーをリポジトリ名に置換する
-      #    `github.event.repository.name` で新しいリポジトリ名が取得できる
+      # 2. 現在のブランチのコミット数を数えます。
+      - name: Get commit count
+        id: get_commit_count
+        run: echo "count=$(git rev-list --count HEAD)" >> $GITHUB_OUTPUT
+
+      # 3. コミット数が「1」の場合のみ、プレースホルダーを置換します。
       - name: Replace placeholders
+        if: steps.get_commit_count.outputs.count == '1'
         run: |
-          # 置換対象のファイルを追加していく
-          files_to_update=("docker-compose.yaml" "package.json")
+          files_to_update=("docker-compose.yaml" "package.json") # 置換対象のファイル
           for file in "${files_to_update[@]}"; do
             if [ -f "$file" ]; then
-              sed -i "s/{{repository_name}}/${{ github.event.repository.name }}/g" "$file"
+              sed -i "s/{{repository_name}}/${{ github.event.repository.name}}/g" "$file"
             fi
           done
 
-      # 3. 変更をコミット＆プッシュする
+      # 4. コミット数が「1」の場合のみ、変更をコミット＆プッシュします。
       - name: Commit and push changes
+        if: steps.get_commit_count.outputs.count == '1'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: initialize repository from template"
-          commit_options: "--no-verify" # pre-commitフックなどをスキップする場合
-          file_pattern: "docker-compose.yaml package.json" # コミット対象のファイルを指定
+          file_pattern: "docker-compose.yaml package.json" # コミット対象のファイル
+
+      # 5. コミット数が「1」の場合のみ、このワークフロー自体を削除します。
+      - name: Self-destruct workflow
+        if: steps.get_commit_count.outputs.count == '1'
+        run: |
+          git rm .github/workflows/init.yml
+          git commit -m "chore: remove initialization workflow"
+          git push
