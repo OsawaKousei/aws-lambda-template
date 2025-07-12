@@ -1,3 +1,5 @@
+[English](./README-en.md)
+
 # AWS Lambda テンプレート
 
 このリポジトリは、AWS Lambda アプリケーションのサンプルプロジェクトです。TypeScript で開発され、Docker を使用してローカル開発環境をセットアップし、AWS Lambda にデプロイするための構成が含まれています。package.json のプロジェクト名、docker compose におけるサービス・コンテナ名は github action により、作成時に自動でレポジトリ名に初期化されます。
