@@ -48,5 +48,10 @@ jobs:
         if: steps.get_commit_count.outputs.count == '1'
         run: |
           git rm .github/workflows/init.yml
-          git commit -m "chore: remove initialization workflow"
-          git push
+
+      # 6. ファイルの削除をコミットする
+      - name: Commit workflow deletion
+        if: steps.get_commit_count.outputs.count == '1'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: remove initialization workflow"
