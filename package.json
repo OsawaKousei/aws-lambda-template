@@ -1,5 +1,5 @@
 {
-  "name": "aws-lambda-study",
+  "name": "{{repository_name}}",
   "version": "1.0.0",
   "dependencies": {
     "dotenv": "^16.0.3"

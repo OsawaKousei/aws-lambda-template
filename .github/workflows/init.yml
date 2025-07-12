@@ -1,0 +1,40 @@
+name: Initialize Repository
+
+# ワークフローが実行されるタイミングを定義
+# mainブランチへの最初のpushをトリガーとする
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  initialize:
+    runs-on: ubuntu-latest
+    # GITHUB_TOKEN に書き込み権限を与える
+    permissions:
+      contents: write
+
+    steps:
+      # 1. リポジトリのソースコードをチェックアウトする
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. プレースホルダーをリポジトリ名に置換する
+      #    `github.event.repository.name` で新しいリポジトリ名が取得できる
+      - name: Replace placeholders
+        run: |
+          # 置換対象のファイルを追加していく
+          files_to_update=("docker-compose.yaml" "package.json")
+          for file in "${files_to_update[@]}"; do
+            if [ -f "$file" ]; then
+              sed -i "s/{{repository_name}}/${{ github.event.repository.name }}/g" "$file"
+            fi
+          done
+
+      # 3. 変更をコミット＆プッシュする
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: initialize repository from template"
+          commit_options: "--no-verify" # pre-commitフックなどをスキップする場合
+          file_pattern: "README.md package.json" # コミット対象のファイルを指定
