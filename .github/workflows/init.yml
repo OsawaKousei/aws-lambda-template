@@ -37,4 +37,4 @@ jobs:
         with:
           commit_message: "chore: initialize repository from template"
           commit_options: "--no-verify" # pre-commitフックなどをスキップする場合
-          file_pattern: "README.md package.json" # コミット対象のファイルを指定
+          file_pattern: "docker-compose.yaml package.json" # コミット対象のファイルを指定
